@@ -1,0 +1,93 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+  push:
+    tags:
+    - '*'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest      
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+    - uses: actions/checkout@v2
+    
+    - name: Compile with QuickJS for Ubuntu
+      uses: quickjs-actions/quickjs-ubuntu/@v0.0.8
+      with:
+        mainFile: hello
+
+    - name: Compile with QuickJS for CentOS
+      uses: quickjs-actions/quickjs-centos/@v0.0.1
+      with:
+        mainFile: hello
+
+    - name: Compile with QuickJS for Alpine
+      uses: quickjs-actions/quickjs-alpine/@v0.0.3
+      with:
+        mainFile: hello
+
+    - name: Compile with QuickJS for Fedora
+      uses: quickjs-actions/quickjs-fedora/@v0.0.1
+      with:
+        mainFile: hello
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: QuickJS for Ubuntu Example - Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+    
+    - name: Upload Ubuntu Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: /home/runner/work/examples/examples/hello-ubuntu
+        asset_name: hello-ubuntu
+        asset_content_type: application/octet-stream
+
+    - name: Upload CentOS Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: /home/runner/work/examples/examples/hello-centos
+        asset_name: hello-centos
+        asset_content_type: application/octet-stream
+
+    - name: Upload Alpine Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: /home/runner/work/examples/examples/hello-alpine
+        asset_name: hello-alpine
+        asset_content_type: application/octet-stream
+
+    - name: Upload Fedora Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: /home/runner/work/examples/examples/hello-fedora
+        asset_name: hello-fedora
+        asset_content_type: application/octet-stream
