@@ -22,7 +22,7 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Compile with QuickJS for Ubuntu
-      uses: quickjs-actions/quickjs-ubuntu/@v0.0.8
+      uses: quickjs-actions/quickjs-ubuntu/@v1.0.0
       with:
         mainFile: hello
 
@@ -48,7 +48,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.ref }}
-        release_name: QuickJS for Ubuntu Example - Release ${{ github.ref }}
+        release_name: QuickJS Example - Release ${{ github.ref }}
         draft: false
         prerelease: false
     
