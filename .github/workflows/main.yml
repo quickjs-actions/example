@@ -65,7 +65,7 @@ jobs:
       run: tar Jxf quickjssrc.tar.xz
 
     - name: Build and install QuickJS
-      run: cd quickjs-2020-07-05.tar.xz; make; make install
+      run: ls -la; cd quickjs-2020-07-05.tar.xz; make; make install
 
     - name: Verify installation
       run: qjsc; qjs
