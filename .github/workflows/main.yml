@@ -6,21 +6,21 @@ on:
     - '*'
 
 jobs:
-  #buildLinux:
-  #  runs-on: ubuntu-latest      
+  buildLinux:
+    runs-on: ubuntu-latest      
 
-  #  steps:
-  #  - uses: actions/checkout@v2
-  #  
-  #  - name: Compile with QuickJS for Ubuntu
-  #    uses: quickjs-actions/quickjs-ubuntu/@v1.0.0
-  #    with:
-  #      mainFile: hello
-  #      
-  #  - uses: actions/upload-artifact@master
-  #    with:
-  #      name: hello-ubuntu
-  #      path: /home/runner/work/example/example/hello-ubuntu
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Compile with QuickJS for Ubuntu
+      uses: quickjs-actions/quickjs-ubuntu/@v1.0.0
+      with:
+        mainFile: hello
+        
+    - uses: actions/upload-artifact@master
+      with:
+        name: hello-ubuntu
+        path: /home/runner/work/example/example/hello-ubuntu
 
   #  - name: Compile with QuickJS for CentOS
   #    uses: quickjs-actions/quickjs-centos/@v0.0.1
@@ -68,7 +68,10 @@ jobs:
       run: ls -la; cd quickjs-2020-07-05; make; make install
 
     - name: Verify installation
-      run: qjsc; qjs
+      run: which qjsc; which qjs
+
+    - name: Compile with QuickJS for MacOS
+      run: qjsc -m hello
         
     - uses: actions/upload-artifact@master
       with:
@@ -105,6 +108,16 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
         asset_path: hello-ubuntu
         asset_name: hello-ubuntu
+        asset_content_type: application/octet-stream
+
+    - name: Upload MacOS Binary
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+        asset_path: hello-macos
+        asset_name: hello-macos
         asset_content_type: application/octet-stream
 
     #- name: Upload CentOS Binary
