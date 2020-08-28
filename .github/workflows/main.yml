@@ -25,22 +25,33 @@ jobs:
       uses: quickjs-actions/quickjs-ubuntu/@v1.0.0
       with:
         mainFile: hello
-
-    - name: Compile with QuickJS for CentOS
-      uses: quickjs-actions/quickjs-centos/@v0.0.1
+        
+    - uses: actions/upload-artifact@master
       with:
-        mainFile: hello
+        name: hello-ubuntu
+        path: /home/runner/work/example/example/hello-ubuntu
 
-    - name: Compile with QuickJS for Alpine
-      uses: quickjs-actions/quickjs-alpine/@v0.0.3
-      with:
-        mainFile: hello
+    #- name: Compile with QuickJS for CentOS
+    #  uses: quickjs-actions/quickjs-centos/@v0.0.1
+    #  with:
+    #    mainFile: hello
 
-    - name: Compile with QuickJS for Fedora
-      uses: quickjs-actions/quickjs-fedora/@v0.0.1
-      with:
-        mainFile: hello
+    #- name: Compile with QuickJS for Alpine
+    #  uses: quickjs-actions/quickjs-alpine/@v0.0.3
+    #  with:
+    #    mainFile: hello
 
+    #- name: Compile with QuickJS for Fedora
+    #  uses: quickjs-actions/quickjs-fedora/@v0.0.1
+    #  with:
+    #    mainFile: hello
+
+  createRelease:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest      
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -51,6 +62,11 @@ jobs:
         release_name: QuickJS Example - Release ${{ github.ref }}
         draft: false
         prerelease: false
+        
+    - uses: actions/download-artifact@master
+      with:
+        name: hello-ubuntu
+        path: /home/runner/work/example/example/hello-ubuntu
     
     - name: Upload Ubuntu Binary
       uses: actions/upload-release-asset@v1
@@ -62,32 +78,32 @@ jobs:
         asset_name: hello-ubuntu
         asset_content_type: application/octet-stream
 
-    - name: Upload CentOS Binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: /home/runner/work/example/example/hello-centos
-        asset_name: hello-centos
-        asset_content_type: application/octet-stream
+    #- name: Upload CentOS Binary
+    #  uses: actions/upload-release-asset@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+    #    asset_path: /home/runner/work/example/example/hello-centos
+    #    asset_name: hello-centos
+    #    asset_content_type: application/octet-stream
 
-    - name: Upload Alpine Binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: /home/runner/work/example/example/hello-alpine
-        asset_name: hello-alpine
-        asset_content_type: application/octet-stream
+    #- name: Upload Alpine Binary
+    #  uses: actions/upload-release-asset@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+    #    asset_path: /home/runner/work/example/example/hello-alpine
+    #    asset_name: hello-alpine
+    #    asset_content_type: application/octet-stream
 
-    - name: Upload Fedora Binary
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: /home/runner/work/example/example/hello-fedora
-        asset_name: hello-fedora
-        asset_content_type: application/octet-stream
+    #- name: Upload Fedora Binary
+    #  uses: actions/upload-release-asset@v1
+    #  env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #  with:
+    #    upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
+    #    asset_path: /home/runner/work/example/example/hello-fedora
+    #    asset_name: hello-fedora
+    #    asset_content_type: application/octet-stream
