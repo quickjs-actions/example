@@ -58,8 +58,17 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Compile with QuickJS for MacOS
-      run: echo "OK" > hello-macos
+    - name: Download QuickJS source 
+      run: curl https://bellard.org/quickjs/quickjs-2020-07-05.tar.xz --output quickjssrc
+
+    - name: Uncompress QuickJS source
+      run: tar Jxf quickjssrc.tar.xz
+
+    - name: Build and install QuickJS
+      run: cd quickjs-2020-07-05.tar.xz; make; make install
+
+    - name: Verify installation
+      run: qjsc; qjs
         
     - uses: actions/upload-artifact@master
       with:
