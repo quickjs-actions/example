@@ -29,7 +29,7 @@ jobs:
     - uses: actions/upload-artifact@master
       with:
         name: hello-ubuntu
-        path: /home/runner/work/example/example/hello-ubuntu
+        path: /home/runner/work/example/example/
 
     #- name: Compile with QuickJS for CentOS
     #  uses: quickjs-actions/quickjs-centos/@v0.0.1
