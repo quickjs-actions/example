@@ -29,7 +29,7 @@ jobs:
     - uses: actions/upload-artifact@master
       with:
         name: hello-ubuntu
-        path: /home/runner/work/example/example/
+        path: /home/runner/work/example/example/hello-ubuntu
 
     #- name: Compile with QuickJS for CentOS
     #  uses: quickjs-actions/quickjs-centos/@v0.0.1
@@ -66,7 +66,7 @@ jobs:
     - uses: actions/download-artifact@master
       with:
         name: hello-ubuntu
-        path: /home/runner/work/example/example/hello-ubuntu
+        path: ./
     
     - name: Upload Ubuntu Binary
       uses: actions/upload-release-asset@v1
@@ -74,7 +74,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
-        asset_path: /home/runner/work/example/example/hello-ubuntu
+        asset_path: hello-ubuntu
         asset_name: hello-ubuntu
         asset_content_type: application/octet-stream
 
