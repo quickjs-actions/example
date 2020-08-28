@@ -94,10 +94,15 @@ jobs:
         release_name: QuickJS Example - Release ${{ github.ref }}
         draft: false
         prerelease: false
-        
+
     - uses: actions/download-artifact@master
       with:
         name: hello-ubuntu
+        path: ./
+
+    - uses: actions/download-artifact@master
+      with:
+        name: hello-macos
         path: ./
     
     - name: Upload Ubuntu Binary
