@@ -1,24 +1,15 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
   push:
     tags:
     - '*'
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  buildLinux:
     runs-on: ubuntu-latest      
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
     - uses: actions/checkout@v2
     
     - name: Compile with QuickJS for Ubuntu
@@ -31,24 +22,53 @@ jobs:
         name: hello-ubuntu
         path: /home/runner/work/example/example/hello-ubuntu
 
-    #- name: Compile with QuickJS for CentOS
-    #  uses: quickjs-actions/quickjs-centos/@v0.0.1
-    #  with:
-    #    mainFile: hello
+    - name: Compile with QuickJS for CentOS
+      uses: quickjs-actions/quickjs-centos/@v0.0.1
+      with:
+        mainFile: hello
 
-    #- name: Compile with QuickJS for Alpine
-    #  uses: quickjs-actions/quickjs-alpine/@v0.0.3
-    #  with:
-    #    mainFile: hello
+    - uses: actions/upload-artifact@master
+      with:
+        name: hello-centos
+        path: /home/runner/work/example/example/hello-centos
 
-    #- name: Compile with QuickJS for Fedora
-    #  uses: quickjs-actions/quickjs-fedora/@v0.0.1
-    #  with:
-    #    mainFile: hello
+    - name: Compile with QuickJS for Alpine
+      uses: quickjs-actions/quickjs-alpine/@v0.0.3
+      with:
+        mainFile: hello
+
+    - uses: actions/upload-artifact@master
+      with:
+        name: hello-alpine
+        path: /home/runner/work/example/example/hello-alpine
+
+    - name: Compile with QuickJS for Fedora
+      uses: quickjs-actions/quickjs-fedora/@v0.0.1
+      with:
+        mainFile: hello
+
+    - uses: actions/upload-artifact@master
+      with:
+        name: hello-fedora
+        path: /home/runner/work/example/example/hello-fedora
+
+  buildMacOS:
+    runs-on: macos-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Compile with QuickJS for MacOS
+      run: touch hello-macos
+        
+    - uses: actions/upload-artifact@master
+      with:
+        name: hello-macos
+        path: hello-macos
 
   createRelease:
     runs-on: ubuntu-latest      
-    needs: [build]
+    needs: [buildLinux, buildMacOS]
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
