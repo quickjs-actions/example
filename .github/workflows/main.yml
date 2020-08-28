@@ -71,7 +71,7 @@ jobs:
       run: which qjsc; which qjs
 
     - name: Compile with QuickJS for MacOS
-      run: qjsc -m hello.js
+      run: qjsc -flto -o hello-macos hello.js
         
     - uses: actions/upload-artifact@master
       with:
