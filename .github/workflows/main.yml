@@ -88,10 +88,13 @@ jobs:
       run: curl https://bellard.org/quickjs/quickjs-2020-07-05.tar.xz --output quickjssrc.tar.xz
 
     - name: Uncompress QuickJS source
-      run: tar Jxf quickjssrc.tar.xz
+      run: |
+           ls
+           tar Jxf quickjssrc.tar.xz
 
     - name: Build and install QuickJS
-      run: dir quickjs-2020-07-05
+      run: |
+           cd quickjs-2020-07-05
            make
            make install
 
