@@ -85,7 +85,7 @@ jobs:
     - uses: actions/checkout@v2
     
     - name: Download QuickJS source 
-      run: curl https://bellard.org/quickjs/quickjs-2020-07-05.tar.xz --output quickjssrc.tar.xz; ls -la; pwd
+      run: curl https://bellard.org/quickjs/quickjs-2020-07-05.tar.xz --output quickjssrc.tar.xz
 
     - name: Uncompress QuickJS source
       run: tar Jxf quickjssrc.tar.xz
